@@ -11,11 +11,11 @@ from vesc_msgs.msg import VescStateStamped
 import matplotlib.pyplot as plt
 
 # YOUR CODE HERE (Set these values and use them in motion_cb)
-KM_V_NOISE = 0.002 # Kinematic car velocity noise std dev
-KM_DELTA_NOISE = 0.006 # Kinematic car delta noise std dev
-KM_X_FIX_NOISE = 0.0006 # Kinematic car x position constant noise std dev
-KM_Y_FIX_NOISE = 0.0006 # Kinematic car y position constant noise std dev
-KM_THETA_FIX_NOISE = 0.0005 # Kinematic car theta constant noise std dev
+KM_V_NOISE = 0.001 # Kinematic car velocity noise std dev
+KM_DELTA_NOISE = 0.003 # Kinematic car delta noise std dev
+KM_X_FIX_NOISE = 0.0003 # Kinematic car x position constant noise std dev
+KM_Y_FIX_NOISE = 0.0003 # Kinematic car y position constant noise std dev
+KM_THETA_FIX_NOISE = 0.00001 # Kinematic car theta constant noise std dev
 
 '''
   Propagates the particles forward based on the velocity and steering angle of the car
@@ -89,7 +89,7 @@ class KinematicMotionModel:
     current_steering_angle = (self.last_servo_cmd - self.STEERING_TO_SERVO_OFFSET)/self.STEERING_TO_SERVO_GAIN
 
     # Propagate particles forward in place
-    particles = []
+    particles = np.zeros((len(self.particles),3))
     particles[:] = self.particles[:]
     for particle in particles:
         #Make controls noisy

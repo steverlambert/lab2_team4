@@ -115,7 +115,6 @@ class ParticleFilter():
 
     # get particles
     particles = np.zeros((self.N_PARTICLES,3))
-    #particles[:] = self.particles[:]
 
     # Use self.permissible_region to get in-bounds states
     permissible_x, permissible_y = np.where(self.permissible_region == 1)
@@ -123,27 +122,13 @@ class ParticleFilter():
     # Uniformally sample from in-bounds regions
     particles_x = np.random.choice(permissible_x, self.N_PARTICLES)
     particles_y = np.random.choice(permissible_y, self.N_PARTICLES)
-    particles_theta = np.zeros(self.N_PARTICLES)
 
-    #initalize local particles
-    #particles = np.zeros((self.N_PARTICLES,3))
+    #set particles x and y
     particles[:,0] = particles_x
     particles[:,1] = particles_y
 
-    #print particles[:,0]
-
     #convert to world samples and add to particles
-    #for i in xrange(self.N_PARTICLES):
-        # Convert map samples (which are in pixels) to world samples (in meters/radians)
-        #particle_map = np.array([int(particles_x[i]),int(particles_y[i]), int(particles_theta[i])])
-        #print particle_map[:,0]
-    #print particles
     Utils.map_to_world(particles,self.map_info)
-    #print particles
-
-        #add the world particle to the array
-    #particles_out = []
-    #particles_out.append(particle_world)
 
     # Update particles in place
     self.particles[:] = particles[:]
@@ -190,8 +175,6 @@ class ParticleFilter():
       particles = np.zeros((self.N_PARTICLES,3))
       weights = np.zeros(self.N_PARTICLES)
 
-      #TODO: fix weighting
-
       particles[:] = self.particles[:]
       weights[:] = self.weights[:]
 
@@ -206,7 +189,6 @@ class ParticleFilter():
       return likely_particle
 
     # YOUR CODE HERE
-    #pass
 
   '''
     Callback for '/initialpose' topic. RVIZ publishes a message to this topic when you specify an initial pose
@@ -218,18 +200,18 @@ class ParticleFilter():
     # Get pose for msg
     pose_x = msg.pose.pose.position.x
     pose_y = msg.pose.pose.position.x
+    quaternion = msg.pose.pose.orientation
+    pose_theta = Utils.quaternion_to_angle(quaternion)
 
     #initialize local particles
     particles = np.zeros((self.N_PARTICLES,3))
 
-    #TODO: Fix appending...
-
     # Sample particles from a gaussian centered around the received pose
-    gauss_var = 0.5 #???
+    gauss_var = 0.1 #???
     for i in xrange(self.N_PARTICLES):
         particles_x = pose_x + random.gauss(0.0,gauss_var)
         particles_y = pose_y + random.gauss(0.0,gauss_var)
-        particles_theta = 0
+        particles_theta = pose_theta
         particles[i] = [particles_x,particles_y,particles_theta]
 
     # Updates the particles in place

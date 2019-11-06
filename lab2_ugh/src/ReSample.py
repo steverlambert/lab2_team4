@@ -37,34 +37,29 @@ class ReSampler:
     #get local particles and weights
     particles[:] = self.particles
     weights[:] = self.weights
+    n_particles = len(particles)
 
     #create new N_PARTICLES bins
-    new_particles = []
+    new_particles = np.zeros((n_particles,3))
 
     weights_norm = sum(weights)
-    for i in xrange(len(particles)):
+    for i in xrange(n_particles):
         weights[i] = (weights[i]/weights_norm)
-    #print sum(weights)
 
     #draw between 0-1 randomly and keep the particles of the bin that it falls in
     for i in xrange(len(particles)):
-        rand_int = np.random.choice(1000)
-        rand = rand_int * 0.001
+        rand_int = np.random.choice(100)
+        rand = rand_int * 0.01
 
         #find particle of weight bin
         index = 0
         weight_sum = 0
-        #print rand
         while (rand > (weights[index] + weight_sum)):
             weight_sum += weights[index]
             index += 1
-            #print rand
-            #print weights[index] + weight_sum
-
-        #print index
 
         #append particle to new_particles
-        new_particles.append(particles[index])
+        new_particles[i] = particles[index]
 
     #update particles in line
     self.particles[:] = new_particles[:]
