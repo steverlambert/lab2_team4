@@ -35,9 +35,9 @@ class ReSampler:
     self.state_lock.acquire()   
    
     #get local particles and weights
-    particles[:] = self.particles
-    weights[:] = self.weights
-    n_particles = len(particles)
+    #particles[:] = self.particles[:]
+    weights = self.weights[:]
+    n_particles = len(self.particles)
 
     #create new N_PARTICLES bins
     new_particles = np.zeros((n_particles,3))
@@ -48,7 +48,7 @@ class ReSampler:
         weights[i] = (weights[i]/weights_norm)
 
     #draw between 0-1 randomly and keep the particles of the bin that it falls in
-    for i in xrange(len(particles)):
+    for i in xrange(len(self.particles)):
         rand_int = np.random.choice(100)
         rand = rand_int * 0.01
 
@@ -60,7 +60,7 @@ class ReSampler:
             index += 1
 
         #append particle to new_particles
-        new_particles[i] = particles[index]
+        new_particles[i] = self.particles[index]
 
     #update particles in line
     self.particles[:] = new_particles[:]

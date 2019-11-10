@@ -199,17 +199,17 @@ class ParticleFilter():
         if weights[i] > max_index:
             max_index = i
 
-    weightedx = particles[:,0] * weights
-    weightedy = particles[:,1] * weights
-    weightedthet = particles[:,2] * weights
+    #weightedx = particles[:,0] * weights
+    #weightedy = particles[:,1] * weights
+    #weightedthet = particles[:,2] * weights
 
-    x = np.sum(weightedx[:])
-    y = np.sum(weightedy[:])
-    thet = np.sum(weightedthet[:])
+    #x = np.sum(weightedx[:])
+    #y = np.sum(weightedy[:])
+    #thet = np.sum(weightedthet[:])
 
     #get the particle with the maximum weight
     likely_particle = particles[max_index]
-    likely_particle2 = np.array([x,y,thet])
+    #likely_particle2 = np.array([x,y,thet])
     #print likely_particle
     #print likely_particle2
     return likely_particle
@@ -227,7 +227,7 @@ class ParticleFilter():
     # YOUR CODE HERE
 
     pose_x = msg.pose.pose.position.x
-    pose_y = msg.pose.pose.position.x
+    pose_y = msg.pose.pose.position.y
     quaternion = msg.pose.pose.orientation
     pose_theta = Utils.quaternion_to_angle(quaternion)
 

@@ -10,11 +10,11 @@ from vesc_msgs.msg import VescStateStamped
 import matplotlib.pyplot as plt
 
 # YOUR CODE HERE (Set these values and use them in motion_cb)
-KM_V_NOISE = .01 # Kinematic car velocity noise std dev
-KM_DELTA_NOISE = .1 # Kinematic car delta noise std dev
-KM_X_FIX_NOISE = .03 # Kinematic car x position constant noise std dev
-KM_Y_FIX_NOISE = .03 # Kinematic car y position constant noise std dev
-KM_THETA_FIX_NOISE = .04 # Kinematic car theta constant noise std dev
+KM_V_NOISE = .1 # Kinematic car velocity noise std dev
+KM_DELTA_NOISE = .15 # Kinematic car delta noise std dev
+KM_X_FIX_NOISE = .06 # Kinematic car x position constant noise std dev
+KM_Y_FIX_NOISE = .06 # Kinematic car y position constant noise std dev
+KM_THETA_FIX_NOISE = .1 # Kinematic car theta constant noise std dev
 CAR_WIDTH = .25
 
 '''
@@ -88,6 +88,7 @@ class KinematicMotionModel:
   
       start = msg.header.stamp
       cur_speed = (msg.state.speed - self.SPEED_TO_ERPM_OFFSET) / self.SPEED_TO_ERPM_GAIN
+      cur_speed *= 1.2
       cur_steer = (self.last_servo_cmd - self.STEERING_TO_SERVO_OFFSET) / self.STEERING_TO_SERVO_GAIN
   
       
@@ -164,7 +165,7 @@ class KinematicMotionModel:
 '''
 
 TEST_SPEED = 1.0 # meters/sec
-TEST_STEERING_ANGLE = 0.34 # radians
+TEST_STEERING_ANGLE = -0.34 # radians
 TEST_DT = 1.0 # seconds
 
 if __name__ == '__main__':
